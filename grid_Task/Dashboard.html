@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container{
+            width: 550px;
+            display: grid;
+            margin-left: 33%;
+            margin-top: 10%;
+            gap: 1%;
+            grid-template-areas:
+            "box1 box1 box1" 
+            "box2 box3 box3"
+            "box2 box3 box3"
+            "box2 box4 box5"
+            "box6 box6 box6" ;
+           
+        }
+        .box{
+        background-color: rgba(10, 164, 67, 0.359);
+        min-height: 100px;
+        color: rgb(4, 61, 111);
+        font-size: 20px;
+        text-align: center;
+      
+         
+       
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box" style="grid-area: box1; background-color: aqua; padding-top: 45px;" >Header</div>
+        <div class="box" style="grid-area: box2; background-color: blue; padding-top: 120px;">Sidebar</div>
+        <div class="box" style="grid-area: box3; background-color: brown; padding-top: 45px;">Main Content</div>
+        <div class="box" style="grid-area: box4; background-color: pink; padding-top: 45px;">Card 1</div>
+        <div class="box" style="grid-area: box5; background-color: cornflowerblue; padding-top: 45px;">card 2</div>
+        <div class="box" style="grid-area: box6; background-color: cyan; padding-top: 45px;">footer</div>
+    </div>
+</body>
+</html>
