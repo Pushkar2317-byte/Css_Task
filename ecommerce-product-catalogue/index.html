@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopKart</title>
+  <style>
+  
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --heading: #111827;
+      --body: #6B7280;
+      --primary: #2563EB;
+      --primary-dark: #1D4ED8;
+      --sale: #DC2626;
+      --border: #E5E7EB;
+      --rating: #F59E0B;
+      --sidebar-width: 240px;
+      --main-gap: 32px;
+      --grid-gap: 24px;
+      --card-padding: 16px;
+      --card-radius: 12px;
+      --card-image-height: 220px;
+    }
+
+    body {
+      background-color: var(--bg);
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      color: var(--heading);
+      line-height: 1.5;
+      padding: 24px;
+      min-height: 100vh;
+    }
+
+    .text-title { font-size: 16px; font-weight: 600; color: var(--heading); }
+    .text-price { font-size: 20px; font-weight: 700; color: var(--heading); }
+    .text-old-price { font-size: 14px; color: var(--body); text-decoration: line-through; }
+    .text-category { font-size: 13px; color: var(--body); }
+    .filter-heading { font-size: 16px; font-weight: 600; color: var(--heading); margin-bottom: 12px; }
+    .body-text { font-size: 14px; color: var(--body); }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      padding: 14px 24px;
+      max-width: 1440px;
+      margin: 0 auto 20px;
+    }
+
+    .nav-logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -0.5px;
+      white-space: nowrap;
+    }
+
+    .nav-search {
+      flex: 1;
+      max-width: 480px;
+      position: relative;
+    }
+
+    .nav-search input {
+      width: 100%;
+      padding: 10px 16px 10px 40px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--heading);
+      background-color: var(--bg);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .nav-search input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .nav-search::before {
+      /* content: '🔍'; */
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      opacity: 0.5;
+    }
+
+    .nav-icons {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--body);
+      font-size: 18px;
+    }
+
+    .nav-icons span {
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .nav-icons span:hover {
+      color: var(--primary);
+    }
+
+  
+    .breadcrumb {
+      max-width: 1440px;
+      margin: 0 auto 20px;
+      font-size: 14px;
+      color: var(--body);
+    }
+
+    .breadcrumb span {
+      color: var(--heading);
+      font-weight: 500;
+    }
+
+    .catalog-layout {
+      display: grid;
+      grid-template-columns: var(--sidebar-width) 1fr;
+      gap: var(--main-gap);
+      max-width: 1440px;
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .filter-sidebar {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      padding: 20px;
+      position: sticky;
+      top: 24px;
+    }
+
+    .filter-sidebar h2 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--heading);
+    }
+
+    .filter-group {
+      margin-bottom: 24px;
+    }
+
+    .filter-group:last-of-type {
+      margin-bottom: 20px;
+    }
+
+    .filter-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: var(--body);
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .filter-option:hover {
+      color: var(--heading);
+    }
+
+    .filter-option input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--primary);
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .apply-filters {
+      width: 100%;
+      background-color: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .apply-filters:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .apply-filters:active {
+      transform: scale(0.98);
+    }
+
+ 
+    .products-section {
+      width: 100%;
+      min-width: 0;
+    }
+
+    .products-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .results-count {
+      font-size: 14px;
+      color: var(--body);
+    }
+
+    .sort-select {
+      padding: 8px 32px 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--heading);
+      background-color: var(--card-bg);
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      outline: none;
+    }
+
+    .sort-select:focus {
+      border-color: var(--primary);
+    }
+
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--grid-gap);
+    }
+
+    .product-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      padding: var(--card-padding);
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.25s ease;
+      position: relative;
+      min-width: 0;
+    }
+
+    .product-card:hover {
+      box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.12), 0 6px 10px -6px rgba(0, 0, 0, 0.06);
+    }
+
+    .product-image-wrapper {
+      width: 100%;
+      height: var(--card-image-height);
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #f1f5f9;
+      margin-bottom: 14px;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+      background: linear-gradient(145deg, #e2e8f0, #cbd5e1);
+    }
+
+    .product-card:hover .product-image {
+      transform: scale(1.06);
+    }
+
+    .badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background-color: var(--sale);
+      color: #fff;
+      letter-spacing: 0.4px;
+      z-index: 2;
+    }
+
+    .badge.new {
+      background-color: var(--primary);
+    }
+
+    .product-category {
+      font-size: 13px;
+      color: var(--body);
+      margin-bottom: 4px;
+    }
+
+    .product-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--heading);
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+
+    .product-rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 10px;
+    }
+
+    .stars {
+      display: flex;
+      gap: 2px;
+      color: var(--rating);
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+
+    .review-count {
+      color: var(--body);
+      font-size: 13px;
+      margin-left: 2px;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .current-price {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--heading);
+    }
+
+    .old-price {
+      font-size: 14px;
+      color: var(--body);
+      text-decoration: line-through;
+    }
+
+
+    .add-to-cart {
+      margin-top: auto;
+      background-color: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+      width: 100%;
+    }
+
+    .add-to-cart:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .add-to-cart:active {
+      transform: scale(0.98);
+    }
+
+
+    @media (min-width: 1280px) {
+      .products-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+   
+    @media (min-width: 640px) and (max-width: 1023px) {
+      .catalog-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .filter-sidebar {
+        position: static;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 16px 32px;
+        padding: 16px 20px;
+      }
+
+      .filter-sidebar h2 {
+        margin-bottom: 0;
+        font-size: 15px;
+      }
+
+      .filter-group {
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .filter-heading {
+        margin-bottom: 0;
+        font-size: 14px;
+      }
+
+      .filter-option {
+        margin-bottom: 0;
+      }
+
+      .apply-filters {
+        width: auto;
+        padding: 8px 20px;
+      }
+
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* < 640px : Mobile */
+    @media (max-width: 639px) {
+      body {
+        padding: 12px;
+      }
+
+      .navbar {
+        padding: 12px 16px;
+        gap: 12px;
+      }
+
+      .nav-search {
+        display: none;
+      }
+
+      .nav-icons {
+        gap: 14px;
+        font-size: 16px;
+      }
+
+      .breadcrumb {
+        font-size: 13px;
+        margin-bottom: 16px;
+      }
+
+      .catalog-layout {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .filter-sidebar {
+        display: none;
+      }
+
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .product-image-wrapper {
+        height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-logo">ShopKart</div>
+    <div class="nav-search">
+      <input type="text" placeholder="Search for products...">
+    </div>
+    <div class="nav-icons">
+      <span title="Cart">Cart</span>
+      <span title="Account">Account</span>
+    </div>
+  </nav>
+  <div class="breadcrumb">
+    Electronics &rsaquo; <span>Laptops</span>
+  </div>
+  <div class="catalog-layout">
+
+    <aside class="filter-sidebar">
+      <h2>Filters</h2>
+
+      <div class="filter-group">
+        <h3 class="filter-heading">Category</h3>
+        <label class="filter-option"><input type="checkbox"> Laptops</label>
+        <label class="filter-option"><input type="checkbox"> Mobiles</label>
+        <label class="filter-option"><input type="checkbox"> Headphones</label>
+        <label class="filter-option"><input type="checkbox"> Tablets</label>
+      </div>
+
+      <div class="filter-group">
+        <h3 class="filter-heading">Price Range</h3>
+        <label class="filter-option"><input type="checkbox"> 0 - 25,000</label>
+        <label class="filter-option"><input type="checkbox"> 25,000 - 50,000</label>
+        <label class="filter-option"><input type="checkbox"> 50,000 - 75,000</label>
+        <label class="filter-option"><input type="checkbox"> 75,000+</label>
+      </div>
+
+      <div class="filter-group">
+        <h3 class="filter-heading">Brand</h3>
+        <label class="filter-option"><input type="checkbox"> Dell</label>
+        <label class="filter-option"><input type="checkbox"> HP</label>
+        <label class="filter-option"><input type="checkbox"> Apple</label>
+        <label class="filter-option"><input type="checkbox"> Lenovo</label>
+        <label class="filter-option"><input type="checkbox"> Asus</label>
+      </div>
+
+      <button class="apply-filters">Apply Filters</button>
+    </aside>
+
+    <!-- PRODUCTS -->
+    <section class="products-section">
+      <div class="products-toolbar">
+        <span class="results-count">Showing 12 results</span>
+        <select class="sort-select">
+          <option>Sort by: Popularity</option>
+          <option>Price: Low to High</option>
+          <option>Price: High to Low</option>
+          <option>Newest First</option>
+          <option>Rating</option>
+        </select>
+      </div>
+
+      <div class="products-grid">
+        <article class="product-card">
+          <div class="product-image-wrapper">
+            <div class="product-image"></div>
+            <!-- <span class="badge">SALE</span> -->
+          </div>
+          <div class="product-category">Dell</div>
+          <h3 class="product-name">Dell Inspiron 15</h3>
+          <div class="product-rating">
+            <span class="stars">★★★★★</span>
+            <span class="review-count">(120)</span>
+          </div>
+          <div class="price-row">
+            <span class="current-price">45,990</span>
+            <span class="old-price">52,990</span>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+        <article class="product-card">
+          <div class="product-image-wrapper">
+            <div class="product-image"></div>
+         
+          </div>
+          <div class="product-category">HP</div>
+          <h3 class="product-name">HP Pavilion</h3>
+          <div class="product-rating">
+            <span class="stars">★★★★☆</span>
+            <span class="review-count">(98)</span>
+          </div>
+          <div class="price-row">
+            <span class="current-price">52,990</span>
+            <span class="old-price">58,990</span>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+
+        <article class="product-card">
+          <div class="product-image-wrapper">
+            <div class="product-image"></div>
+          </div>
+          <div class="product-category">Lenovo</div>
+          <h3 class="product-name">Lenovo IdeaPad</h3>
+          <div class="product-rating">
+            <span class="stars">★★★★☆</span>
+            <span class="review-count">(76)</span>
+          </div>
+          <div class="price-row">
+            <span class="current-price">38,990</span>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+
+        <article class="product-card">
+          <div class="product-image-wrapper">
+            <div class="product-image"></div>
+         
+          </div>
+          <div class="product-category">Apple</div>
+          <h3 class="product-name">MacBook Air M2</h3>
+          <div class="product-rating">
+            <span class="stars">★★★★★</span>
+            <span class="review-count">(210)</span>
+          </div>
+          <div class="price-row">
+            <span class="current-price">92,990</span>
+            <span class="old-price">99,990</span>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+
+        <article class="product-card">
+          <div class="product-image-wrapper">
+            <div class="product-image"></div>
+          </div>
+          <div class="product-category">Asus</div>
+          <h3 class="product-name">ASUS VivoBook</h3>
+          <div class="product-rating">
+            <span class="stars">★★★★☆</span>
+            <span class="review-count">(64)</span>
+          </div>
+          <div class="price-row">
+            <span class="current-price">44,990</span>
+            <span class="old-price">49,990</span>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+
+        <article class="product-card">
+          <div class="product-image-wrapper">
+            <div class="product-image"></div>
+         
+          </div>
+          <div class="product-category">Dell</div>
+          <h3 class="product-name">Dell XPS 13</h3>
+          <div class="product-rating">
+            <span class="stars">★★★★★</span>
+            <span class="review-count">(152)</span>
+          </div>
+          <div class="price-row">
+            <span class="current-price">89,990</span>
+            <span class="old-price">99,990</span>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+        <article class="product-card">
+          <div class="product-image-wrapper">
+            <div class="product-image"></div>
+          </div>
+          <div class="product-category">HP</div>
+          <h3 class="product-name">HP Envy x360</h3>
+          <div class="product-rating">
+            <span class="stars">★★★★☆</span>
+            <span class="review-count">(88)</span>
+          </div>
+          <div class="price-row">
+            <span class="current-price">67,990</span>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+
+        <article class="product-card">
+          <div class="product-image-wrapper">
+            <div class="product-image"></div>
+           
+          </div>
+          <div class="product-category">Apple</div>
+          <h3 class="product-name">MacBook Pro 14"</h3>
+          <div class="product-rating">
+            <span class="stars">★★★★★</span>
+            <span class="review-count">(190)</span>
+          </div>
+          <div class="price-row">
+            <span class="current-price">1,49,990</span>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+
+        <article class="product-card">
+          <div class="product-image-wrapper">
+            <div class="product-image"></div>
+          </div>
+          <div class="product-category">Lenovo</div>
+          <h3 class="product-name">Lenovo ThinkPad X1</h3>
+          <div class="product-rating">
+            <span class="stars">★★★★☆</span>
+            <span class="review-count">(57)</span>
+          </div>
+          <div class="price-row">
+            <span class="current-price">1,12,990</span>
+            <span class="old-price">1,24,990</span>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+
+        <article class="product-card">
+          <div class="product-image-wrapper">
+            <div class="product-image"></div>
+           
+          </div>
+          <div class="product-category">Asus</div>
+          <h3 class="product-name">ASUS ROG Zephyrus</h3>
+          <div class="product-rating">
+            <span class="stars">★★★★★</span>
+            <span class="review-count">(133)</span>
+          </div>
+          <div class="price-row">
+            <span class="current-price">1,39,990</span>
+            <span class="old-price">1,59,990</span>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+        <article class="product-card">
+          <div class="product-image-wrapper">
+            <div class="product-image"></div>
+          </div>
+          <div class="product-category">Dell</div>
+          <h3 class="product-name">Dell Latitude 14</h3>
+          <div class="product-rating">
+            <span class="stars">★★★★☆</span>
+            <span class="review-count">(41)</span>
+          </div>
+          <div class="price-row">
+            <span class="current-price">74,990</span>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+        <article class="product-card">
+          <div class="product-image-wrapper">
+            <div class="product-image"></div>
+            <span class="badge new">NEW</span>
+          </div>
+          <div class="product-category">HP</div>
+          <h3 class="product-name">HP Spectre x360</h3>
+          <div class="product-rating">
+            <span class="stars">★★★★★</span>
+            <span class="review-count">(102)</span>
+          </div>
+          <div class="price-row">
+            <span class="current-price">1,24,990</span>
+            <span class="old-price">1,34,990</span>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+
+      </div>
+    </section>
+  </div>
+
+</body>
+</html>
