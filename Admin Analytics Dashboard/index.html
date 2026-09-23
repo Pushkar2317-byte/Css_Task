@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Analytics Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+   
+    tailwind.config = { theme: { extend: { fontFamily: { inter: ['Inter', 'system-ui', 'sans-serif'] } } } };
+  </script>
+  <style>
+    body { margin: 0; -webkit-font-smoothing: antialiased; }
+    .table-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
+    .table-scroll::-webkit-scrollbar-track { background: #F1F5F9; border-radius: 10px; }
+    .table-scroll::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
+  </style>
+</head>
+<body class="font-inter bg-[#F1F5F9] text-[#0F172A]">
+
+  <div class="flex min-h-screen">
+
+   
+    <aside id="sidebar"
+           class="fixed inset-y-0 left-0 z-40 w-[240px] shrink-0 flex flex-col bg-[#0F172A] text-[#CBD5E1]
+                  transform -translate-x-full transition-transform duration-200 ease-in-out
+                  md:sticky md:top-0 md:h-screen md:self-start md:translate-x-0">
+      <div class="h-[64px] flex items-center justify-between px-6 border-b border-[#1E293B]">
+        <span class="text-white text-xl font-bold tracking-tight">Admin<span class="text-indigo-400">.</span></span>
+        <button id="closeSidebarBtn" aria-label="Close menu" class="md:hidden text-[#CBD5E1] hover:text-white focus:outline-none">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <nav class="flex-1 overflow-y-auto px-4 py-6 space-y-2 text-sm font-medium">
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#4F46E5] text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          Dashboard
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#1E293B] hover:text-white transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          Analytics
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#1E293B] hover:text-white transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          Customers
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#1E293B] hover:text-white transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          Products
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#1E293B] hover:text-white transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Settings
+        </a>
+      </nav>
+
+     
+    </aside>
+
+   
+    <div id="overlay" class="fixed inset-0 z-30 hidden bg-black/50 md:hidden"></div>
+
+   
+    <div class="flex-1 flex flex-col min-w-0">
+
+     
+      <header class="sticky top-0 z-20 h-[64px] w-full flex items-center bg-white border-b border-[#E2E8F0] px-4 md:px-6 lg:px-8">
+        <div class="flex items-center justify-between w-full">
+          <div class="flex items-center gap-3">
+            <button id="menuToggle" aria-label="Open menu" class="md:hidden p-1 -ml-1 text-[#0F172A] focus:outline-none">
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <h1 class="text-2xl font-bold text-[#0F172A]">Dashboard</h1>
+          </div>
+        
+        </div>
+      </header>
+
+     
+      <main class="p-4 md:p-6 lg:p-8 flex flex-col gap-6">
+
+       
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="flex flex-col bg-white rounded-xl border border-[#E2E8F0] p-5 shadow-sm">
+            <span class="text-sm font-medium text-[#64748B]">Total Revenue</span>
+            <span class="mt-1 text-[28px] leading-9 font-bold text-[#0F172A]">₹48,290</span>
+            <span class="mt-2 flex items-center gap-1 text-xs text-[#16A34A]">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>12.5%
+            </span>
+          </div>
+          <div class="flex flex-col bg-white rounded-xl border border-[#E2E8F0] p-5 shadow-sm">
+            <span class="text-sm font-medium text-[#64748B]">Active Users</span>
+            <span class="mt-1 text-[28px] leading-9 font-bold text-[#0F172A]">2,845</span>
+            <span class="mt-2 flex items-center gap-1 text-xs text-[#16A34A]">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>8.2%
+            </span>
+          </div>
+          <div class="flex flex-col bg-white rounded-xl border border-[#E2E8F0] p-5 shadow-sm">
+            <span class="text-sm font-medium text-[#64748B]">Conversion Rate</span>
+            <span class="mt-1 text-[28px] leading-9 font-bold text-[#0F172A]">3.24%</span>
+            <span class="mt-2 flex items-center gap-1 text-xs text-[#DC2626]">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>1.1%
+            </span>
+          </div>
+          <div class="flex flex-col bg-white rounded-xl border border-[#E2E8F0] p-5 shadow-sm">
+            <span class="text-sm font-medium text-[#64748B]">Avg. Order</span>
+            <span class="mt-1 text-[28px] leading-9 font-bold text-[#0F172A]">₹126.50</span>
+            <span class="mt-2 flex items-center gap-1 text-xs text-[#D97706]">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>0.8%
+            </span>
+          </div>
+        </section>
+
+     
+        <section class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
+
+          <div class="min-w-0 bg-white rounded-xl border border-[#E2E8F0] p-5 shadow-sm">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="text-base font-semibold text-[#0F172A]">Revenue Chart</h3>
+              <span class="text-xs text-[#64748B]">Last 7 days</span>
+            </div>
+            <div class="h-40 w-full flex items-end gap-2 md:gap-3">
+              <div class="flex-1 rounded-t bg-[#4F46E5]/30" style="height:40%"></div>
+              <div class="flex-1 rounded-t bg-[#4F46E5]/50" style="height:65%"></div>
+              <div class="flex-1 rounded-t bg-[#4F46E5]/60" style="height:50%"></div>
+              <div class="flex-1 rounded-t bg-[#4F46E5]/80" style="height:80%"></div>
+              <div class="flex-1 rounded-t bg-[#4F46E5]"    style="height:55%"></div>
+              <div class="flex-1 rounded-t bg-[#4F46E5]/60" style="height:70%"></div>
+              <div class="flex-1 rounded-t bg-[#4F46E5]/50" style="height:45%"></div>
+            </div>
+            
+            <div class="flex gap-2 md:gap-3 mt-2 text-xs text-[#64748B] text-center">
+              <span class="flex-1">Mon</span><span class="flex-1">Tue</span><span class="flex-1">Wed</span><span class="flex-1">Thu</span><span class="flex-1">Fri</span><span class="flex-1">Sat</span><span class="flex-1">Sun</span>
+            </div>
+          </div>
+
+          <div class="min-w-0 bg-white rounded-xl border border-[#E2E8F0] p-5 shadow-sm">
+            <div class="flex justify-between items-center mb-3">
+              <h3 class="text-base font-semibold text-[#0F172A]">Recent Orders</h3>
+              <a href="#" class="text-xs font-medium text-[#4F46E5]">View all</a>
+            </div>
+           
+            <div class="table-scroll overflow-x-auto">
+              <table class="w-full min-w-[300px] text-sm">
+                <thead>
+                  <tr class="text-left text-[#64748B] border-b border-[#E2E8F0]">
+                    <th class="pb-2 font-medium">Order</th>
+                    <th class="pb-2 font-medium">Customer</th>
+                    <th class="pb-2 font-medium">Amount</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-[#E2E8F0]">
+                  <tr><td class="py-2 text-[#0F172A]">#101</td><td class="py-2 text-[#64748B]">John Doe</td><td class="py-2 font-medium text-[#0F172A]">₹120</td></tr>
+                  <tr><td class="py-2 text-[#0F172A]">#102</td><td class="py-2 text-[#64748B]">Jane Smith</td><td class="py-2 font-medium text-[#0F172A]">₹85</td></tr>
+                  <tr><td class="py-2 text-[#0F172A]">#103</td><td class="py-2 text-[#64748B]">Mike Ross</td><td class="py-2 font-medium text-[#0F172A]">₹210</td></tr>
+                  <tr><td class="py-2 text-[#0F172A]">#104</td><td class="py-2 text-[#64748B]">Sarah Lee</td><td class="py-2 font-medium text-[#0F172A]">₹45</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+       
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          <div class="min-w-0 bg-white rounded-xl border border-[#E2E8F0] p-5 shadow-sm">
+            <h3 class="mb-4 text-base font-semibold text-[#0F172A]">Traffic</h3>
+            <div class="flex flex-col gap-3">
+              <div class="flex justify-between items-center text-sm"><span class="text-[#64748B]">Direct</span><span class="font-medium text-[#0F172A]">45%</span></div>
+              <div class="w-full h-2 rounded-full bg-[#E2E8F0] overflow-hidden"><div class="h-2 rounded-full bg-[#4F46E5]" style="width:45%"></div></div>
+              <div class="flex justify-between items-center text-sm"><span class="text-[#64748B]">Organic</span><span class="font-medium text-[#0F172A]">30%</span></div>
+              <div class="w-full h-2 rounded-full bg-[#E2E8F0] overflow-hidden"><div class="h-2 rounded-full bg-[#4F46E5]/70" style="width:30%"></div></div>
+              <div class="flex justify-between items-center text-sm"><span class="text-[#64748B]">Referral</span><span class="font-medium text-[#0F172A]">25%</span></div>
+              <div class="w-full h-2 rounded-full bg-[#E2E8F0] overflow-hidden"><div class="h-2 rounded-full bg-[#4F46E5]/50" style="width:25%"></div></div>
+            </div>
+          </div>
+
+          <div class="min-w-0 bg-white rounded-xl border border-[#E2E8F0] p-5 shadow-sm">
+            <h3 class="mb-4 text-base font-semibold text-[#0F172A]">Top Products</h3>
+            <div class="flex flex-col gap-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center font-semibold text-[#4F46E5]">1</div>
+                  <div><p class="text-sm font-medium text-[#0F172A]">Wireless Earbuds</p><p class="text-xs text-[#64748B]">Electronics</p></div>
+                </div>
+                <span class="text-sm font-semibold text-[#0F172A]">₹12.4k</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center font-semibold text-[#4F46E5]">2</div>
+                  <div><p class="text-sm font-medium text-[#0F172A]">Smart Watch</p><p class="text-xs text-[#64748B]">Wearables</p></div>
+                </div>
+                <span class="text-sm font-semibold text-[#0F172A]">₹8.9k</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center font-semibold text-[#4F46E5]">3</div>
+                  <div><p class="text-sm font-medium text-[#0F172A]">Phone Case</p><p class="text-xs text-[#64748B]">Accessories</p></div>
+                </div>
+                <span class="text-sm font-semibold text-[#0F172A]">₹5.2k</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center font-semibold text-[#4F46E5]">4</div>
+                  <div><p class="text-sm font-medium text-[#0F172A]">USB-C Hub</p><p class="text-xs text-[#64748B]">Electronics</p></div>
+                </div>
+                <span class="text-sm font-semibold text-[#0F172A]">₹3.7k</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('overlay');
+      const menuToggle = document.getElementById('menuToggle');
+      const closeBtn = document.getElementById('closeSidebarBtn');
+
+      function openSidebar() {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeSidebar() {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+
+      menuToggle.addEventListener('click', openSidebar);
+      closeBtn.addEventListener('click', closeSidebar);
+      overlay.addEventListener('click', closeSidebar);
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSidebar(); });
+
+      
+      window.addEventListener('resize', () => { if (window.innerWidth >= 768) closeSidebar(); });
+    })();
+  </script>
+</body>
+</html>
